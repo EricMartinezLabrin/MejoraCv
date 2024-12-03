@@ -1,0 +1,31 @@
+---
+import Rating from "@/components/shared/Rating.astro";
+import ShowStatusIcon from "@/components/shared/ShowStatusIcon.astro";
+const { checked, blur } = Astro.props;
+const { title, comments, score } = checked;
+---
+
+<div
+  class=`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-[23rem] ${blur}`
+>
+  <div class="grid gap-4">
+    <ShowStatusIcon score={score} />
+    <h5
+      class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
+    >
+      {title}
+    </h5>
+  </div>
+  <div>
+    <p
+      class="mb-3 font-normal text-gray-500 dark:text-gray-400 max-h-36 overflow-hidden whitespace-normal text-ellipsis"
+    >
+      {comments}
+    </p>
+  </div>
+  <div
+    class="inline-flex font-medium items-center text-blue-600 hover:underline"
+  >
+    <Rating score={score} />
+  </div>
+</div>

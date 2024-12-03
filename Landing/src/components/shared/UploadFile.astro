@@ -1,0 +1,78 @@
+---
+import Upload from "@/components/icons/upload.astro";
+---
+
+<section class="w-full lg:w-10/12">
+  <label
+    id="drop_zone_label"
+    class="h-28 py-1 px-1 w-full pr-1 flex gap-3 items-center justify-center text-heading-3 shadow-lg shadow-box-shadow
+                      border border-box-border bg-box-bg rounded-xl ease-linear focus-within:bg-body focus-within:border-primary sca"
+  >
+    <Upload />
+    <p id="dragBoxText" class="text-white/80">
+      Arrastra y suelta tu CV a esta zona ...
+    </p>
+    <input type="file" id="drop_zone" class="hidden" />
+  </label>
+
+  <script type="module" is:inline>
+    const container = document.getElementById("drop_zone_label");
+    const dragBoxText = document.getElementById("dragBoxText");
+
+    const handleDragover = (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (!container) return;
+      container.classList.add("bg-gray-500");
+      container.classList.add("scale-105");
+    };
+
+    const handleDragLeave = (ev) => {
+      ev.preventDefault();
+      if (!container) return;
+      container.classList.remove("bg-gray-500");
+      container.classList.remove("scale-105");
+    };
+
+    const handleDrop = async (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const { dataTransfer } = ev;
+      const { files } = dataTransfer;
+      const { type } = files[0];
+      if (type.includes("doc") || type.includes("pdf")) {
+        container.classList.remove("bg-gray-500");
+        container.classList.remove("scale-105");
+        const base64Files = await Promise.all(
+          Array.from(files).map(fileToBase64)
+        );
+        localStorage.setItem("uploadedFiles", JSON.stringify(base64Files));
+        window.location.href = "http://localhost:3000/";
+      } else {
+        container.classList.add("bg-red-500");
+        container.classList.add("scale-105");
+        dragBoxText.textContent = "Solo se permiten archivos PDF o DOCX";
+        setTimeout(() => {
+          container.classList.remove("bg-red-500");
+          container.classList.remove("scale-105");
+          container.classList.remove("bg-gray-500");
+          container.classList.remove("scale-105");
+          dragBoxText.textContent = "Arrastra y suelta tu CV a esta zona ...";
+        }, 2000);
+      }
+    };
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    container?.addEventListener("dragover", handleDragover);
+    container?.addEventListener("dragleave", handleDragLeave);
+    container?.addEventListener("drop", handleDrop);
+  </script>
+</section>

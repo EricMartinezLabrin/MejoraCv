@@ -1,0 +1,147 @@
+---
+import Check from "../shared/Check.astro";
+import type { Analisis } from "@/utils/types";
+
+const checked: Analisis[] = [
+  {
+    title: "Palabras clave relevantes",
+    comments:
+      "El currículum debe contener palabras clave específicas relacionadas con el puesto, como habilidades técnicas y nombres de herramientas. Si faltan, el currículum podría ser descartado.",
+    score: 5,
+  },
+  {
+    title: "Experiencia laboral",
+    comments:
+      "Se verifica si la experiencia laboral es relevante para el puesto y si la duración de cada empleo es adecuada. Currículums con experiencia insuficiente o irrelevante reciben una puntuación baja.",
+    score: 4,
+  },
+  {
+    title: "Educación",
+    comments:
+      "El software revisa el nivel educativo y la relevancia de los estudios para el puesto. Un nivel educativo que no cumple con los requisitos del trabajo puede disminuir la puntuación.",
+    score: 3,
+  },
+  {
+    title: "Habilidades técnicas",
+    comments:
+      "Se busca la presencia de habilidades técnicas específicas requeridas para el puesto. La falta de estas habilidades puede llevar a una puntuación baja.",
+    score: 3,
+  },
+  {
+    title: "Certificaciones y licencias",
+    comments:
+      "El software revisa si el candidato tiene las certificaciones o licencias necesarias para el puesto. La ausencia de estos elementos críticos puede afectar negativamente la puntuación.",
+    score: 3,
+  },
+  {
+    title: "Formato del currículum",
+    comments:
+      "El software analiza si el currículum está bien organizado y sigue un formato profesional. Un formato poco profesional o desordenado puede resultar en una puntuación baja.",
+    score: 3,
+  },
+  {
+    title: "Títulos y encabezados claros",
+    comments:
+      "El currículum debe tener títulos y encabezados claros para cada sección, lo que facilita su lectura y análisis. La falta de claridad en esta área puede reducir la puntuación.",
+    score: 2,
+  },
+  {
+    title: "Años de experiencia",
+    comments:
+      "Se analiza si los años de experiencia laboral coinciden con los requisitos del puesto. La falta de experiencia necesaria puede dar lugar a una puntuación baja.",
+    score: 3,
+  },
+  {
+    title: "Estabilidad laboral",
+    comments:
+      "El software revisa la estabilidad laboral del candidato, considerando la duración promedio en cada empleo. Muchas transiciones en poco tiempo pueden impactar negativamente la puntuación.",
+    score: 1,
+  },
+  {
+    title: "Lenguaje y gramática",
+    comments:
+      "Se verifica la correcta utilización del lenguaje y la gramática. Errores frecuentes o mala redacción pueden disminuir la puntuación del currículum.",
+    score: 3,
+  },
+  {
+    title: "Personalización del currículum",
+    comments:
+      "El software analiza si el currículum ha sido adaptado para el puesto específico, lo que puede incluir ajustes en la experiencia laboral y habilidades. La falta de personalización puede reducir la puntuación.",
+    score: 3,
+  },
+  {
+    title: "Compatibilidad ATS",
+    comments:
+      "El currículum debe estar optimizado para los sistemas ATS, lo que incluye el uso de formatos compatibles y evitar gráficos o tablas complejas. Un currículum no compatible puede ser automáticamente descartado.",
+    score: 1,
+  },
+];
+
+// Paso 1: Filtrar elementos con score 1, 4 o 5
+const relevantItems = checked.filter(
+  (item) => item.score === 1 || item.score === 4 || item.score === 5
+);
+const otherItems = checked.filter(
+  (item) => item.score !== 1 && item.score !== 4 && item.score !== 5
+);
+
+// Paso 2: Asegurar que al menos uno de los primeros cuatro elementos tenga score 4 o 5
+const highScoreItems = relevantItems.filter(
+  (item) => item.score === 4 || item.score === 5
+);
+const lowScoreItems = relevantItems.filter((item) => item.score === 1);
+
+// Mezclar elementos de puntuación baja
+const shuffledLowScoreItems = lowScoreItems.sort(() => Math.random() - 0.5);
+
+// Elegir los primeros 4 elementos
+let firstFour = [];
+if (highScoreItems.length > 0) {
+  // Añadir al menos un elemento con score 4 o 5
+  firstFour.push(highScoreItems.pop()!);
+}
+
+// Rellenar los primeros 4 elementos
+firstFour = [
+  ...firstFour,
+  ...shuffledLowScoreItems.slice(0, 3 - firstFour.length),
+];
+
+// Mezclar los primeros 4 elementos
+firstFour = firstFour.sort(() => Math.random() - 0.5);
+
+// Combinar con el resto de los elementos
+const finalOrder = [...firstFour, ...otherItems, ...highScoreItems];
+---
+
+<section>
+  <script type="module" is:inline>
+    const files = localStorage.getItem("uploadedFiles");
+    const uploadedFiles = JSON.parse(files);
+    const divFile = document.getElementById("file");
+    uploadedFiles.map((file) => {
+      const pdfElement = document.createElement("iframe");
+      pdfElement.src = file;
+      pdfElement.width = "100%";
+      pdfElement.allowFullscreen = true;
+      pdfElement.title = "Curriculum Vitae";
+      pdfElement.importance = "low";
+      pdfElement.classList.add("h-[500]");
+      pdfElement.classList.add("lg:h-full");
+      divFile.appendChild(pdfElement);
+    });
+  </script>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-8">
+    {
+      finalOrder.map((item: any, index: number) => (
+        <Check checked={item} blur={index >= 4 ? "blur" : ""} />
+      ))
+    }
+    <div
+      id="file"
+      class="col-span-1 md:col-span-2 lg:col-start-3 lg:col-span-1 lg:row-start-1 lg:row-span-2 bg-white"
+    >
+    </div>
+  </div>
+</section>

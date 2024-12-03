@@ -1,0 +1,20 @@
+---
+import Star from "@/components/icons/star.astro";
+const empty = "w-4 h-4 ms-1 text-gray-300 dark:text-gray-500";
+const full = "w-4 h-4 text-yellow-300 ms-1";
+const { score } = Astro.props;
+const maxStars = 5;
+const emptyStars = maxStars - score;
+---
+
+<div class="flex items-center">
+{
+    Array.from({ length: score }, (_, i) => (
+        <Star class=`${full}` />
+    ))
+    }
+    {
+    Array.from({ length: emptyStars }, (_, i) => (
+        <Star class=`${empty}` />
+    ))
+}</div>

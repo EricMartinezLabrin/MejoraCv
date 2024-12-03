@@ -1,0 +1,31 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import CvCheck from "@/components/sections/CvCheck.astro";
+import Sensured from "@/components/shared/Sensured.astro";
+---
+
+<Layout title="Mejora tu Curriculum con IA">
+  <main
+    class="mx-auto max-w-7xl w-full px-5 sm:px-8 md:px-14 lg:px-5 flex flex-col lg:flex-row gap-10 lg:gap-12 relative"
+  >
+    <section class="relative pt-32 lg:pt-36">
+      <h1 class="text-heading-1 font-semibold text-2xl sm:text-3xl md:text-4xl">
+        Análisamos tu Curriculum con IA
+      </h1>
+      <p class="text-heading-1">
+        ¿Sabías que la mayor parte de los curriculums no son vistos por los
+        reclutadores?
+      </p>
+      <p class="text-heading-1">
+        Actualmente los reclutadores utilizan algoritmos e inteligencia
+        artificial para filtrar los mejores los mejores Curriculums
+      </p>
+      <p class="text-heading-1">
+        Con nuestro analisis de Curriculum con IA, te ayudamos a mejorar tu
+        curriculum para que pase los filtros de los reclutadores
+      </p>
+      <CvCheck />
+    </section>
+    <Sensured />
+  </main>
+</Layout>

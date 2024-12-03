@@ -1,0 +1,27 @@
+---
+import CheckIcon from "@/components/icons/check.astro";
+import DangerIcon from "@/components/icons/danger.astro";
+import CautionIcon from "@/components/icons/caution.astro";
+const { score } = Astro.props;
+const green = score >= 4 ? "flex" : "hidden";
+const yellow = score === 2 || score === 3 ? "flex" : "hidden";
+const red = score === 1 ? "flex" : "hidden";
+---
+
+<div>
+  <div
+    class=`bg-green-500 rounded-full size-11 text-heading-1 p-1 ${green} justify-center items-center`
+  >
+    <CheckIcon stroke-width="3" />
+  </div>
+  <div
+    class=`bg-red-500 rounded-full size-11 text-heading-1 p-1 ${red} justify-center items-center`
+  >
+    <DangerIcon stroke-width="3" />
+  </div>
+  <div
+    class=`bg-yellow-500 rounded-full size-11 text-heading-1 p-1 ${yellow} justify-center items-center`
+  >
+    <CautionIcon stroke-width="3" />
+  </div>
+</div>
