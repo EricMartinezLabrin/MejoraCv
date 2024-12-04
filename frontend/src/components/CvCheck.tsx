@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Check from "@/components/Check";
-import { createClient } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
 import Score from "@/components/score";
 
 type checkedType = {
@@ -14,15 +12,11 @@ type checkedType = {
 export default function CvCheck(props: any) {
   const { AiResponse, finalScore } = props;
   const responseJSON = JSON.parse(AiResponse);
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<string | null>(null);
 
   const getSession = async () => {
-    const supabase = createClient();
-    const { error, data } = await supabase.auth.getSession();
-    if (error) {
-      console.error(error);
-    }
-    setSession(data.session);
+    const data = localStorage.getItem("token");
+    setSession(data);
   };
   useEffect(() => {
     getSession();
