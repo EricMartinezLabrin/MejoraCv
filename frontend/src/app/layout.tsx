@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useEffect } from "react";
 import "@/app/globals.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export interface Props {
   title: string;
@@ -110,7 +111,13 @@ export default function RootLayout({ children }: Props) {
       <body className="overflow-hidden overflow-y-auto bg-body">
         <Navbar />
         <main className="flex min-h-screen flex-col items-center py-24 px-4 lg:p-24">
-          {children}
+          <GoogleOAuthProvider
+            clientId={
+              process.env.NEXT_PUBLIC_G_CLIENT_ID || "default-client-id"
+            }
+          >
+            {children}
+          </GoogleOAuthProvider>
         </main>
         <Footer />
       </body>

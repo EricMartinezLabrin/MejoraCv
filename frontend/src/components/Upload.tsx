@@ -6,12 +6,11 @@ import { useChat } from "ai/react";
 import CvCheck from "@/components/CvCheck";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { useRouter } from "next/navigation";
-import { Session } from "@supabase/supabase-js";
 // import { createClient } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import Score from "@/components/score";
 
-export default function Upload({ session }: { session: Session | null }) {
+export default function Upload({ session }: { session: string | null }) {
   const router = useRouter();
   const prompt = `Analiza el archivo adjunto y retorna un reporte que siga el formato [{"title":"response","comments":"response","score":0},{...}], evaluando aspectos clave como palabras clave relevantes, experiencia laboral, educación, habilidades técnicas, certificaciones, formato, títulos claros, años de experiencia, estabilidad laboral, lenguaje y gramática, personalización, y compatibilidad ATS, el score maximo es 5, no uses etiqeutas, si el score es inferior a 5, incluye dentro de comments consejos practicos y orientados al cv que acabas de leer para llegar a score 5, si el archivo no es un CV, retorna [{"error":"El archivo no es un CV"}], no te disculpes, no hagas comentarios, unicamente puedes responder las dos opciones que te di.`;
   const [finalScore, setFinalScore] = useState<number | undefined>(undefined);
