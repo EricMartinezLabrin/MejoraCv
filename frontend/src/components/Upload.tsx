@@ -57,7 +57,6 @@ export default function Upload({ session }: { session: string | null }) {
 
   const handleFileUpload = async (files: File[]) => {
     if (files[0].type.includes("pdf")) {
-      console.log(files[0]);
       const img = await convertPdfToImages(files[0]);
       setImg(img);
       uploadFile(files[0], "pdf", files[0].name);
@@ -230,10 +229,9 @@ export default function Upload({ session }: { session: string | null }) {
             <TypewriterEffect key={2} words={wordsLoaded} />
           ))}
 
-        {!isLoading &&
-          response &&
-          (console.log(response),
-          (<CvCheck AiResponse={response} finalScore={finalScore} />))}
+        {!isLoading && response && (
+          <CvCheck AiResponse={response} finalScore={finalScore} />
+        )}
       </div>
     </>
   );

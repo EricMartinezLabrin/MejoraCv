@@ -2,11 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma.services';
 import { OAuth2Client } from 'google-auth-library';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   private client: OAuth2Client;
-  constructor(private prisma: PrismaService) {
+
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {
     this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
   }
 
@@ -24,42 +29,40 @@ export class AuthService {
   }
 
   async loginWithGoogle(credential: CreateAuthDto) {
-    try {
-      const payload = await this.verifyGoogleToken(credential.credential);
+    const payload = await this.verifyGoogleToken(credential.credential);
 
-      if (!payload) {
-        throw new Error('Invalid google token');
-      }
-      const {
-        email,
-        email_verified,
-        name,
-        picture,
-        given_name,
-        family_name,
-        sub: google_id,
-      } = payload;
-
-      let user = await this.prisma.user.findUnique({
-        where: { google_id: google_id },
-      });
-
-      if (!user) {
-        user = await this.prisma.user.create({
-          data: {
-            google_id: google_id,
-            email: email,
-            first_name: given_name,
-            last_name: family_name,
-            picture: picture,
-            full_name: name,
-            email_verified: email_verified,
-          },
-        });
-      }
-      return user;
-    } catch (error) {
-      console.error(error);
+    if (!payload) {
+      throw new Error('Invalid google token');
     }
+    const {
+      email,
+      email_verified,
+      name,
+      picture,
+      given_name,
+      family_name,
+      sub: google_id,
+    } = payload;
+
+    let user = await this.prisma.user.findUnique({
+      where: { google_id: google_id },
+    });
+
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          google_id: google_id,
+          email: email,
+          first_name: given_name,
+          last_name: family_name,
+          picture: picture,
+          full_name: name,
+          email_verified: email_verified,
+        },
+      });
+    }
+
+    const payloadJwt = { sub: user.id, email: user.email };
+    return { access_token: await this.jwtService.signAsync(payloadJwt) };
   }
 }

@@ -16,7 +16,6 @@ export default function Score({ finalScore }: { finalScore: number }) {
       break;
   }
 
-  console.log(finalScore, bgColor);
   return (
     <div className="flex gap-4 min-h-10 items-center justify-center py-8 w-full">
       <h2 className="text-xl text-heading-1 font-semibold">

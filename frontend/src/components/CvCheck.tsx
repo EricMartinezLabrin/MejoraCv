@@ -71,18 +71,13 @@ export default function CvCheck(props: any) {
     <section className="transition-opacity duration-500 ease-in-out opacity-0 animate-fadeIn max-w-[22rem] lg:max-w-4xl">
       {finalScore && <Score finalScore={finalScore} />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-8">
-        {finalOrder.map(
-          (item: any, index: number) => (
-            console.log("el item es:", item),
-            (
-              <Check
-                key="index"
-                checked={item}
-                blur={!session && index >= 3 ? "blur" : ""}
-              />
-            )
-          )
-        )}
+        {finalOrder.map((item: any, index: number) => (
+          <Check
+            key="index"
+            checked={item}
+            blur={!session && index >= 3 ? "blur" : ""}
+          />
+        ))}
       </div>
     </section>
   );

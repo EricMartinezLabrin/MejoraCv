@@ -21,9 +21,9 @@ export default function LoginBanner({ session }: any) {
   }
   const saveToken = (token: Credential) => {
     googleLogin(token).then((response) => {
-      localStorage.setItem("token", response?.id);
-      if (response.id) {
-        session(response.id);
+      localStorage.setItem("token", response?.access_token);
+      if (response?.access_token) {
+        session(response?.access_token);
       }
     });
   };
