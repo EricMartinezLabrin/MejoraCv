@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -23,4 +23,18 @@ model User {
   full_name      String?
   email_verified Boolean  @default(false)
   created_at     DateTime @default(now())
+  Files          Files[]
+}
+
+model Files {
+  id            String   @id @default(cuid())
+  fileName      String   @unique
+  filePath      String   @unique
+  fileSize      Int
+  fileType      String
+  fileExtension String
+  fileUrl       String   @unique
+  created_at    DateTime @default(now())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
 }
