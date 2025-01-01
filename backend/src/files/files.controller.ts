@@ -3,17 +3,17 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  // Patch,
   Param,
   Delete,
   UploadedFiles,
   UseInterceptors,
-  HttpException,
-  HttpStatus,
+  BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
-import { UpdateFileDto } from './dto/update-file.dto';
+// import { UpdateFileDto } from './dto/update-file.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
@@ -27,20 +27,24 @@ export class FilesController {
       storage: memoryStorage(),
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(pdf)$/)) {
-          return callback(new Error('Only .pdf files are allowed!'), false);
+          return callback(
+            new BadRequestException('Only .pdf files are allowed!'),
+            false,
+          );
         }
         callback(null, true);
       },
     }),
   )
-  create(
+  async create(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() createFileDto: CreateFileDto,
+    @Req() req: Request,
   ) {
     try {
-      return this.filesService.create(files, createFileDto);
+      return await this.filesService.create(files, createFileDto, req);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw error;
     }
   }
 
@@ -54,10 +58,10 @@ export class FilesController {
     return this.filesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
-    return this.filesService.update(+id, updateFileDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
+  //   return this.filesService.update(+id, updateFileDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
