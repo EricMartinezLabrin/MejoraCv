@@ -11,9 +11,7 @@ export class EvalService {
   }
   async create(createEvalDto: CreateEvalDto) {
     //   get pdf
-    const pdf = await fetch(
-      'https://f002.backblazeb2.com/file/MejoraCv/cvs/d7ed431b-d7d3-4041-ba39-8f9a0206edde-Eric-Martinez-labrin-2025.pdf',
-    );
+    const pdf = await fetch(createEvalDto.pdfUrl);
     // convert to buffer
     const pdfBuffer = await pdf.arrayBuffer();
     // parse pdf to text
@@ -45,6 +43,6 @@ export class EvalService {
       ],
     });
 
-    console.log(response.choices[0].message);
+    return response.choices[0].message.content;
   }
 }

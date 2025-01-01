@@ -1,1 +1,3 @@
-export class CreateEvalDto {}
+export class CreateEvalDto {
+  pdfUrl: string;
+}
