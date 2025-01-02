@@ -2,37 +2,29 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import convertPdfToImages from "@/components/PdfToPng";
-import { useChat } from "ai/react";
 import CvCheck from "@/components/CvCheck";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { useRouter } from "next/navigation";
-import { uploadFile } from "@/api/backend";
-import Score from "@/components/score";
+import { uploadFile, analyzeCv } from "@/api/backend";
+import { CVAnalize } from "@/lib/types";
 
 export default function Upload({ session }: { session: string | null }) {
   const router = useRouter();
-  const prompt = `Analiza el archivo adjunto y retorna un reporte que siga el formato [{"title":"response","comments":"response","score":0},{...}], evaluando aspectos clave como palabras clave relevantes, experiencia laboral, educación, habilidades técnicas, certificaciones, formato, títulos claros, años de experiencia, estabilidad laboral, lenguaje y gramática, personalización, y compatibilidad ATS, el score maximo es 5, no uses etiqeutas, si el score es inferior a 5, incluye dentro de comments consejos practicos y orientados al cv que acabas de leer para llegar a score 5, si el archivo no es un CV, retorna [{"error":"El archivo no es un CV"}], no te disculpes, no hagas comentarios, unicamente puedes responder las dos opciones que te di.`;
   const [finalScore, setFinalScore] = useState<number | undefined>(undefined);
-  const [showTitle, setShowTitle] = useState<boolean>(false);
   const [hiddeInput, setHiddeInput] = useState<boolean>(false);
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      initialInput: prompt,
-      onError(error) {
-        console.error(error);
-      },
-    });
   const [img, setImg] = useState<string[]>([]);
-  const [response, setResponse] = useState<string | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [token, setToken] = useState<string>("");
+  const [messages, setMessages] = useState<CVAnalize[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cv, setCv] = useState<string | null>(null);
+  const [showTitle, setShowTitle] = useState<boolean>(false);
 
+  // Get Token from LocalStorage
   useEffect(() => {
     const getToken = localStorage.getItem("token") || "";
     setToken(getToken);
-    console.log("token", token);
   }, []);
 
   const openModal = (image: string) => {
@@ -48,7 +40,8 @@ export default function Upload({ session }: { session: string | null }) {
   const handleFileUpload = async (files: File[]) => {
     if (files[0].type.includes("pdf")) {
       if (!token) console.error("Inicia Sesión para continuar");
-      await uploadFile(files[0], token);
+      const [{ fileUrl }] = await uploadFile(files[0], token);
+      setCv(fileUrl);
       const img = await convertPdfToImages(files[0]);
       setImg(img);
     } else {
@@ -56,6 +49,20 @@ export default function Upload({ session }: { session: string | null }) {
       files.pop();
     }
   };
+
+  // Analiza el CV cuando se sube
+  useEffect(() => {
+    if (cv && token) {
+      const handleMessages = async () => {
+        setIsLoading(true);
+        setShowTitle(true);
+        const data = await analyzeCv(cv, token);
+        setMessages(data);
+        setIsLoading(false);
+      };
+      handleMessages();
+    }
+  }, [cv]);
 
   // Ocultar el input si ya se subió un archivo
   useEffect(() => {
@@ -67,31 +74,24 @@ export default function Upload({ session }: { session: string | null }) {
     return;
   }, [img]);
 
-  // Obtener la respuesta del bot
-  useEffect(() => {
-    if (messages.length > 1) {
-      setResponse(messages[messages?.length - 1]?.content);
-    }
-  }, [messages]);
-
   // Calcular el score final
   useEffect(() => {
-    if (!response) return;
+    if (!messages) return;
     if (isLoading) return;
-    // Parsear el JSON
-    const jsonData = JSON.parse(response);
 
     // Inicializar la suma de los scores
     let totalScore = 0;
 
     // Iterar sobre los elementos del JSON y sumar los scores
-    jsonData.forEach((item: { score: number }) => {
+    messages.forEach((item: { score: any }) => {
       if (item.score !== undefined) {
         totalScore += item.score;
       }
     });
-    setFinalScore(parseFloat((totalScore / jsonData.length).toFixed(1)));
-  }, [response]);
+
+    console.log(parseFloat((totalScore / messages.length).toFixed(1)));
+    setFinalScore(parseFloat((totalScore / messages.length).toFixed(1)));
+  }, [messages]);
 
   const wordsLoading = [
     {
@@ -167,26 +167,7 @@ export default function Upload({ session }: { session: string | null }) {
         </div>
       </section>
       <section>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            router.push("#title", { scroll: true });
-            setShowTitle(true);
-            handleInputChange({
-              target: { value: prompt },
-            } as React.ChangeEvent<HTMLInputElement>);
-            handleSubmit(event, {
-              experimental_attachments: img.map((image) => ({
-                url: image,
-                contentType: "image/png",
-              })),
-            });
-
-            if (fileInputRef.current) {
-              fileInputRef.current.value = "";
-            }
-          }}
-        >
+        <form>
           <button
             disabled={isLoading}
             type="submit"
@@ -220,8 +201,8 @@ export default function Upload({ session }: { session: string | null }) {
             <TypewriterEffect key={2} words={wordsLoaded} />
           ))}
 
-        {!isLoading && response && (
-          <CvCheck AiResponse={response} finalScore={finalScore} />
+        {!isLoading && messages && (
+          <CvCheck Aimessages={messages} finalScore={finalScore} />
         )}
       </div>
     </>

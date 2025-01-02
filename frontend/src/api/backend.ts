@@ -21,13 +21,12 @@ export const googleLogin = async (credential: Credential) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
 export const uploadFile = async (files: File, token: string) => {
   try {
-    console.log(`${backendUrl}/files`);
     const formData = new FormData();
     formData.append("files", files);
     const response = await fetch(`${backendUrl}/files`, {
@@ -41,9 +40,29 @@ export const uploadFile = async (files: File, token: string) => {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
-    console.error(error);
+    throw error;
+  }
+};
+
+export const analyzeCv = async (cvUrl: string, token: string) => {
+  try {
+    const response = await fetch(`${backendUrl}/eval`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ pdfUrl: cvUrl }),
+    });
+    console.error(response);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
   }
 };

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Check from "@/components/Check";
 import Score from "@/components/score";
+import { CvCheckProps } from "@/lib/types";
 
 type checkedType = {
   title: string;
@@ -9,11 +10,8 @@ type checkedType = {
   score: number;
 };
 
-export default function CvCheck(props: any) {
-  const { AiResponse, finalScore } = props;
-  const responseJSON = JSON.parse(AiResponse);
+export default function CvCheck({ Aimessages, finalScore }: CvCheckProps) {
   const [session, setSession] = useState<string | null>(null);
-
   const getSession = async () => {
     const data = localStorage.getItem("token");
     setSession(data);
@@ -21,18 +19,20 @@ export default function CvCheck(props: any) {
   useEffect(() => {
     getSession();
   });
-
-  if (responseJSON.some((item: any) => item.error !== undefined))
+  if (!Aimessages || !finalScore) {
+    return null;
+  }
+  if (Aimessages.some((item: any) => item.error !== undefined))
     return (
       <div className="text-center text-red-500">El archivo no es un C.V.</div>
     );
 
   // Paso 1: Filtrar elementos con score 1, 4 o 5
-  const relevantItems = responseJSON?.filter(
+  const relevantItems = Aimessages?.filter(
     (item: checkedType) =>
       item.score === 1 || item.score === 4 || item.score === 5
   );
-  const otherItems = responseJSON?.filter(
+  const otherItems = Aimessages?.filter(
     (item: checkedType) =>
       item.score !== 1 && item.score !== 4 && item.score !== 5
   );

@@ -13,3 +13,14 @@ export interface User {
   email_verified: boolean;
   google_id: string;
 }
+
+export interface CVAnalize {
+  title: string;
+  comments: string;
+  score: number;
+}
+
+export interface CvCheckProps {
+  Aimessages: CVAnalize[];
+  finalScore: number | undefined;
+}
