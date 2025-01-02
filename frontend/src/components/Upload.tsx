@@ -6,8 +6,7 @@ import { useChat } from "ai/react";
 import CvCheck from "@/components/CvCheck";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { useRouter } from "next/navigation";
-// import { createClient } from "@supabase/supabase-js";
-import { createClient } from "@/utils/supabase/client";
+import { uploadFile } from "@/api/backend";
 import Score from "@/components/score";
 
 export default function Upload({ session }: { session: string | null }) {
@@ -26,10 +25,15 @@ export default function Upload({ session }: { session: string | null }) {
   const [img, setImg] = useState<string[]>([]);
   const [response, setResponse] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const supabase = createClient();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [token, setToken] = useState<string>("");
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("token") || "";
+    setToken(getToken);
+    console.log("token", token);
+  }, []);
 
   const openModal = (image: string) => {
     setSelectedImage(image);
@@ -41,25 +45,12 @@ export default function Upload({ session }: { session: string | null }) {
     setIsModalOpen(false);
   };
 
-  const uploadFile = async (file: File, type: string, name: string) => {
-    const buckerName = type === "pdf" ? "pdf" : "Images";
-    const hash = Math.random().toString(36).substring(7);
-    const filePath = `${name}-${hash}`;
-    const { data, error } = await supabase.storage
-      .from(buckerName)
-      .upload(filePath, file);
-    if (error) {
-      console.error("Error uploading file: ", error.message);
-    } else {
-      alert("File uploaded successfully!");
-    }
-  };
-
   const handleFileUpload = async (files: File[]) => {
     if (files[0].type.includes("pdf")) {
+      if (!token) console.error("Inicia Sesión para continuar");
+      await uploadFile(files[0], token);
       const img = await convertPdfToImages(files[0]);
       setImg(img);
-      uploadFile(files[0], "pdf", files[0].name);
     } else {
       // Eliminamos el archivo subido
       files.pop();
@@ -187,7 +178,7 @@ export default function Upload({ session }: { session: string | null }) {
             handleSubmit(event, {
               experimental_attachments: img.map((image) => ({
                 url: image,
-                contentType: "image/png", // o el tipo de imagen correcto
+                contentType: "image/png",
               })),
             });
 
