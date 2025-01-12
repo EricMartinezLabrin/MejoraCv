@@ -11,45 +11,7 @@ export interface Props {
 }
 export default function RootLayout({ children }: Props) {
   useEffect(() => {
-    const switchTheme = document.querySelector(
-      "[data-switch-theme]"
-    ) as HTMLButtonElement;
-
-    if (
-      localStorage.getItem("appTheme") === "dark" ||
-      (!("appTheme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    if (switchTheme) {
-      switchTheme.addEventListener("click", (e) => {
-        e.preventDefault();
-        const doc = document.documentElement;
-        if (doc) {
-          if (localStorage.getItem("appTheme")) {
-            if (localStorage.getItem("appTheme") === "light") {
-              doc.classList.add("dark");
-              localStorage.setItem("appTheme", "dark");
-            } else {
-              document.documentElement.classList.remove("dark");
-              localStorage.setItem("appTheme", "light");
-            }
-          } else {
-            if (doc.classList.contains("dark")) {
-              doc.classList.remove("dark");
-              localStorage.setItem("appTheme", "light");
-            } else {
-              doc.classList.add("dark");
-              localStorage.setItem("appTheme", "dark");
-            }
-          }
-        }
-      });
-    }
+    document.documentElement.classList.add("dark");
 
     const toggleMenu = document.querySelector(
       "[data-toggle-nav]"
@@ -92,15 +54,14 @@ export default function RootLayout({ children }: Props) {
   }, []);
 
   return (
-    <html lang="en">
+    <html lang="es" className="dark">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content="Next.js" />
         <meta
-          name="description"
-          content="AgenceX - SEO Agency website landing page made with Next.js and TailwindCSS"
+          name="Haz que tu cv sea visible para los reclutadores"
+          content="Analizamos tu CV con IA para darte tips que te ayudarán a que pase todos los filtros de los reclutadores"
         />
         <title>Mejora CV </title>
         <link

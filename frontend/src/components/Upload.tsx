@@ -7,6 +7,7 @@ import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { useRouter } from "next/navigation";
 import { uploadFile, analyzeCv } from "@/api/backend";
 import { CVAnalize } from "@/lib/types";
+import LoginModal from "./login-modal";
 
 export default function Upload({ session }: { session: string | null }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function Upload({ session }: { session: string | null }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [cv, setCv] = useState<string | null>(null);
   const [showTitle, setShowTitle] = useState<boolean>(false);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   // Get Token from LocalStorage
   useEffect(() => {
@@ -39,7 +41,10 @@ export default function Upload({ session }: { session: string | null }) {
 
   const handleFileUpload = async (files: File[]) => {
     if (files[0].type.includes("pdf")) {
-      if (!token) console.error("Inicia Sesión para continuar");
+      if (!token) {
+        setOpenDrawer(true);
+        return;
+      }
       const [{ fileUrl }] = await uploadFile(files[0], token);
       setCv(fileUrl);
       const img = await convertPdfToImages(files[0]);
@@ -134,6 +139,7 @@ export default function Upload({ session }: { session: string | null }) {
   return (
     <>
       <section className="flex flex-wrap overflow-hidden w-full max-w-[22rem] lg:max-w-4xl mx-auto min-h-96 border border-dashed bg-white dark:bg-black/5 border-neutral-200 dark:border-neutral-800 rounded-lg ">
+        <LoginModal openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         <FileUpload onChange={handleFileUpload} hiddeInput={hiddeInput} />
         <div className="flex gap-4 overflow-auto lg:justify-center w-full py-5">
           {img.map((image, index) => (

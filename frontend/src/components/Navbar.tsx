@@ -59,7 +59,9 @@ const Navbar: React.FC = () => {
             </ul>
 
             <div className="lg:min-w-max flex items-center sm:w-max w-full pb-6 lg:pb-0 border-b border-box-bg lg:border-0 px-6 lg:px-0 ">
-              <AuthButtonServer />
+              <div className="min-w-[150px] h-[40px] flex items-center justify-center">
+                {AuthButtonServer ? <AuthButtonServer /> : null}
+              </div>
             </div>
           </div>
 
