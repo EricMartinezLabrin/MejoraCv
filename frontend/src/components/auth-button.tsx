@@ -1,25 +1,13 @@
-import { createClient } from "@/utils/supabase/client";
-import { Session } from "@supabase/supabase-js";
 import React, { useState, useEffect } from "react";
 import BtnLink from "@/components/BtnLink";
 import { logout } from "@/app/login/actions";
 
 export default function AuthButtonServer() {
-  const [sessionState, setSessionState] = useState<Session | null>(null);
+  const [sessionState, setSessionState] = useState<string | null>(null);
 
   useEffect(() => {
-    const getSession = async () => {
-      const supabase = createClient();
-      const { error, data } = await supabase.auth.getSession();
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-      setSessionState(data.session);
-      return;
-    };
-    getSession();
+    const getSession = localStorage.getItem("token");
+    setSessionState(getSession);
   }, []);
 
   if (sessionState) {

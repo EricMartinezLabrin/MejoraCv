@@ -8,7 +8,7 @@ export default function Check(props: any) {
   const { score, title, comments } = checked;
   return (
     <div
-      className={`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-[23rem] ${blur}`}
+      className={`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-[23rem] ${blur} hover:scale-105 transition-transform duration-300 ease-in-out`}
     >
       <div className="grid gap-4">
         <ShowStatusIcon score={score} />
@@ -24,7 +24,7 @@ export default function Check(props: any) {
       <div className="inline-flex font-medium items-center text-blue-600 hover:underline">
         {score && <Rating props={{ score }} />}
       </div>
-      <ShowMore />
+      {/* <ShowMore /> */}
     </div>
   );
 }
