@@ -1,21 +1,12 @@
-import TerserPlugin from "terser-webpack-plugin";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.optimization.minimizer = [
-        new TerserPlugin({
-          terserOptions: {
-            output: {
-              ascii_only: true, // Esta opción asegura que solo se usen caracteres ASCII
-            },
-          },
-        }),
-      ];
+    webpack: (config, { dev, isServer }) => {
+        config.optimization = {
+            ...config.optimization,
+            minimize: false
+        }
+        return config
     }
-    return config;
-  },
-};
+}
 
-export default nextConfig;
+export default nextConfig

@@ -25,6 +25,7 @@ export default function AuthButtonServer() {
       </form>
     );
   }
+  return null;
   // return (
   //   <BtnLink
   //     text="Iniciar Sesión"

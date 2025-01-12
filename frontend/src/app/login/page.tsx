@@ -1,19 +1,9 @@
 "use server";
 import { googleLogin } from "@/app/login/actions";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
 
 export default async function Login() {
-  const supabase = createClient();
-  const { error, data } = await supabase.auth.getSession();
-  if (data.session) {
-    redirect("/dashboard");
-  }
-  if (error) {
-    console.error(error);
-  }
-
   return (
     <section>
       <h1 className="text-heading-1 text-2xl font-bold">Login</h1>

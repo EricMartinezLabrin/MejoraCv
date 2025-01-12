@@ -1,16 +1,15 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import convertPdfToImages from "@/components/PdfToPng";
 import CvCheck from "@/components/CvCheck";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
-import { useRouter } from "next/navigation";
 import { uploadFile, analyzeCv } from "@/api/backend";
 import { CVAnalize } from "@/lib/types";
 import LoginModal from "./login-modal";
+import Link from "next/link";
 
 export default function Upload({ session }: { session: string | null }) {
-  const router = useRouter();
   const [finalScore, setFinalScore] = useState<number | undefined>(undefined);
   const [hiddeInput, setHiddeInput] = useState<boolean>(false);
   const [img, setImg] = useState<string[]>([]);
@@ -94,7 +93,6 @@ export default function Upload({ session }: { session: string | null }) {
       }
     });
 
-    console.log(parseFloat((totalScore / messages.length).toFixed(1)));
     setFinalScore(parseFloat((totalScore / messages.length).toFixed(1)));
   }, [messages]);
 
@@ -188,7 +186,7 @@ export default function Upload({ session }: { session: string | null }) {
           </button>
         </form>
         {img.length > 0 && (
-          <a
+          <Link
             href="/"
             title="Limpiar"
             className="w-full relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 transition-opacity duration-1000 ease-in-out opacity-0 animate-fadeIn"
@@ -196,7 +194,7 @@ export default function Upload({ session }: { session: string | null }) {
             <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 flex justify-center ">
               Limpiar
             </span>
-          </a>
+          </Link>
         )}
       </section>
       <div id="title" className="relative pt-3 lg:pt-10">

@@ -1,7 +1,6 @@
 import React from "react";
 import ShowStatusIcon from "@/components/ShowStatusIcon";
 import Rating from "@/components/Rating";
-import ShowMore from "./show-more";
 
 export default function Check(props: any) {
   const { blur, checked } = props;

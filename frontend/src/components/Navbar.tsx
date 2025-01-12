@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "@/components/Container";
 import Navitem from "@/components/Navitem";
-import BtnLink from "@/components/BtnLink";
 import AuthButtonServer from "./auth-button";
+import Link from "next/link";
 
 const navItems = [
   {
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
         <nav className="w-full flex justify-between gap-6 relative">
           {/* logo */}
           <div className="min-w-max inline-flex relative">
-            <a href="/" className="relative flex items-center gap-3">
+            <Link href="/" className="relative flex items-center gap-3">
               <div className="relative w-7 h-7 overflow-hidden flex rounded-xl">
                 <span className="absolute w-4 h-4 -top-1 -right-1 bg-green-500 rounded-md rotate-45"></span>
                 <span className="absolute w-4 h-4 -bottom-1 -right-1 bg-[#FCDC58] rounded-md rotate-45"></span>
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
               <div className="inline-flex text-lg font-semibold text-heading-1">
                 AgenceX
               </div>
-            </a>
+            </Link>
           </div>
 
           <div

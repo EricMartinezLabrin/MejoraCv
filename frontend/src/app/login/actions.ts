@@ -1,9 +1,38 @@
+"use server";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+export async function login(formData: FormData) {
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function signup(formData: FormData) {
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function googleLogin() {
+  revalidatePath("/", "layout");
+  // redirect("/");
+}
+
 export async function logout() {
   localStorage.removeItem("token");
-
-  // revalidatePath("/", "layout");
   redirect("/");
 }
