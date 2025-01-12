@@ -6,7 +6,7 @@ import AuthButtonServer from "./auth-button";
 
 const navItems = [
   {
-    href: "/dashboard",
+    href: "/",
     text: "Inicio",
   },
   {
