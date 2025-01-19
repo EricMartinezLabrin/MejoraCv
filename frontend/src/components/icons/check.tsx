@@ -5,10 +5,10 @@ export default function CheckIcon(props: any) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-check"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dashed-check"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
       <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95"></path>

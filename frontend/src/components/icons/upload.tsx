@@ -13,9 +13,9 @@ const UploadIcon: React.FC<UploadIconProps> = (props) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="1"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="1"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className="icon icon-tabler icons-tabler-outline icon-tabler-upload"
     {...props}
   >
