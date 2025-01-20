@@ -31,7 +31,12 @@ const Navbar: React.FC = () => {
           {/* logo */}
           <div className="min-w-max inline-flex relative">
             <Link href="/" className="relative flex items-center gap-3">
-              <div className="relative w-7 h-7 overflow-hidden flex rounded-xl">
+              <img
+                src="/MejoraCV.webp"
+                alt="Logo Mejora Cv"
+                className="h-12 w-48 object-cover flex justify-center self-center"
+              />
+              {/* <div className="relative w-7 h-7 overflow-hidden flex rounded-xl">
                 <span className="absolute w-4 h-4 -top-1 -right-1 bg-green-500 rounded-md rotate-45"></span>
                 <span className="absolute w-4 h-4 -bottom-1 -right-1 bg-[#FCDC58] rounded-md rotate-45"></span>
                 <span className="absolute w-4 h-4 -bottom-1 -left-1 bg-primary rounded-md rotate-45"></span>
@@ -39,7 +44,7 @@ const Navbar: React.FC = () => {
               </div>
               <div className="inline-flex text-lg font-semibold text-heading-1">
                 AgenceX
-              </div>
+              </div> */}
             </Link>
           </div>
 

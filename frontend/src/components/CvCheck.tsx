@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Check from "@/components/Check";
 import Score from "@/components/score";
 import { CvCheckProps } from "@/lib/types";
@@ -12,6 +12,7 @@ type checkedType = {
 
 export default function CvCheck({ Aimessages, finalScore }: CvCheckProps) {
   const [session, setSession] = useState<string | null>(null);
+  const element = useRef<HTMLDivElement>(null);
   const getSession = async () => {
     const data = localStorage.getItem("token");
     setSession(data);
@@ -66,11 +67,20 @@ export default function CvCheck({ Aimessages, finalScore }: CvCheckProps) {
 
   // Combinar con el resto de los elementos
   const finalOrder = [...firstFour, ...otherItems, ...highScoreItems];
-
+  if (element.current) {
+    element.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
   return (
     <section className="transition-opacity duration-500 ease-in-out opacity-0 animate-fadeIn max-w-[22rem] lg:max-w-4xl">
-      {finalScore && <Score finalScore={finalScore} />}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-8">
+      {finalScore && (
+        <div ref={element}>
+          <Score finalScore={finalScore} />
+        </div>
+      )}
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 py-8">
         {finalOrder.map((item: any, index: number) => (
           <Check
             key={index}

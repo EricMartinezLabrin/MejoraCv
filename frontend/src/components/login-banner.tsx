@@ -1,13 +1,10 @@
 "use client";
-import {
-  IconBrandGoogleFilled,
-  IconBrandFacebookFilled,
-} from "@tabler/icons-react";
 // import { googleLogin } from "@/app/login/actions";
 import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { googleLogin } from "@/api/backend";
 import { Credential } from "@/lib/types";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginBanner({ session }: any) {
   const [isClient, setIsClient] = useState(false);
@@ -22,6 +19,7 @@ export default function LoginBanner({ session }: any) {
   const saveToken = (token: Credential) => {
     googleLogin(token).then((response) => {
       localStorage.setItem("token", response?.access_token);
+      useAuthStore.getState().setToken(response?.access_token);
       if (response?.access_token) {
         session(response?.access_token);
       }

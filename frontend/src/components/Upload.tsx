@@ -7,7 +7,7 @@ import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { uploadFile, analyzeCv } from "@/api/backend";
 import { CVAnalize } from "@/lib/types";
 import LoginModal from "./login-modal";
-import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Upload({ session }: { session: string | null }) {
   const [finalScore, setFinalScore] = useState<number | undefined>(undefined);
@@ -21,7 +21,11 @@ export default function Upload({ session }: { session: string | null }) {
   const [cv, setCv] = useState<string | null>(null);
   const [showTitle, setShowTitle] = useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const currentToken = useAuthStore((state) => state.token);
 
+  useEffect(() => {
+    currentToken && setToken(currentToken);
+  }, [currentToken]);
   // Get Token from LocalStorage
   useEffect(() => {
     const getToken = localStorage.getItem("token") || "";
@@ -173,7 +177,7 @@ export default function Upload({ session }: { session: string | null }) {
       <section>
         <form>
           <button
-            disabled={isLoading}
+            disabled={true}
             type="submit"
             className={`
             ${!hiddeInput ? "hidden" : "block"}
@@ -181,11 +185,11 @@ export default function Upload({ session }: { session: string | null }) {
             my-4 w-full relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 transition-opacity duration-1000 ease-in-out opacity-0 animate-fadeIn`}
           >
             <span className="w-full relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 ">
-              {isLoading ? "Analizando..." : "Analizar"}
+              {isLoading ? "Analizando..." : "Terminamos tu analisis"}
             </span>
           </button>
         </form>
-        {img.length > 0 && (
+        {/* {img.length > 0 && (
           <Link
             href="/"
             title="Limpiar"
@@ -195,7 +199,7 @@ export default function Upload({ session }: { session: string | null }) {
               Limpiar
             </span>
           </Link>
-        )}
+        )} */}
       </section>
       <div id="title" className="relative pt-3 lg:pt-10">
         {showTitle &&
