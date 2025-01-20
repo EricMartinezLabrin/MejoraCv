@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "@/components/Container";
 import Paragraph from "@/components/Paragraph";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ const Footer: React.FC = () => {
 
           <div className="flex flex-col lg:flex-row items-center lg:items-center gap-8 w-full">
             <div className="w-full lg:w-1/3">
-              <a
+              <Link
                 href="/"
                 className="relative flex items-center justify-center lg:justify-start"
               >
@@ -36,7 +37,7 @@ const Footer: React.FC = () => {
                   alt="logo"
                   className="h-12 w-48 object-cover flex justify-center self-center"
                 />
-              </a>
+              </Link>
             </div>
 
             <div className="w-full lg:w-2/3">
