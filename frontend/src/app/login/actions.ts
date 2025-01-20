@@ -7,10 +7,10 @@ import { useAuthStore } from "@/store/authStore";
 export async function login(formData: FormData) {
   // type-casting here for convenience
   // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+  // const data = {
+  //   email: formData.get("email") as string,
+  //   password: formData.get("password") as string,
+  // };
 
   revalidatePath("/", "layout");
   redirect("/");
