@@ -36,7 +36,6 @@ export class AuthService {
       throw new UnauthorizedException('JWT_SECRET no configurado');
     }
 
-    console.log('JWT Secret existe:', !!jwtSecret);
     return await this.jwtService.signAsync(payloadJwt, {
       secret: jwtSecret,
     });
@@ -77,8 +76,6 @@ export class AuthService {
 
     const payloadJwt = { sub: user.id, email: user.email };
 
-    const access_token = await this.signToken(payloadJwt);
-    console.log('Access token:', access_token);
     return { access_token: await this.jwtService.signAsync(payloadJwt) };
   }
 }
