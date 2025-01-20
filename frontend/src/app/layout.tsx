@@ -58,7 +58,7 @@ export default function RootLayout({ children }: Props) {
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/MejoraCV.svg" />
         <meta
           name="Haz que tu cv sea visible para los reclutadores"
           content="Analizamos tu CV con IA para darte tips que te ayudarán a que pase todos los filtros de los reclutadores"

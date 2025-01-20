@@ -1,7 +1,8 @@
-"use server";
+"use client";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 export async function login(formData: FormData) {
   // type-casting here for convenience
@@ -34,5 +35,6 @@ export async function googleLogin() {
 
 export async function logout() {
   localStorage.removeItem("token");
+  useAuthStore.getState().setToken(null);
   redirect("/");
 }

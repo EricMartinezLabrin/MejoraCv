@@ -56,7 +56,7 @@ export const analyzeCv = async (cvUrl: string, token: string) => {
       },
       body: JSON.stringify({ pdfUrl: cvUrl }),
     });
-    console.error(response);
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

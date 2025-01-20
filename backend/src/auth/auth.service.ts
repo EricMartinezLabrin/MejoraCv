@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '@/prisma.services';
 import { OAuth2Client } from 'google-auth-library';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {
     this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
   }
@@ -28,9 +30,19 @@ export class AuthService {
     }
   }
 
+  async signToken(payloadJwt: any) {
+    const jwtSecret = this.configService.get<string>('JWT_SECRET');
+    if (!jwtSecret) {
+      throw new UnauthorizedException('JWT_SECRET no configurado');
+    }
+
+    return await this.jwtService.signAsync(payloadJwt, {
+      secret: jwtSecret,
+    });
+  }
+
   async loginWithGoogle(credential: CreateAuthDto) {
     const payload = await this.verifyGoogleToken(credential.credential);
-
     if (!payload) {
       throw new Error('Invalid google token');
     }
@@ -63,6 +75,7 @@ export class AuthService {
     }
 
     const payloadJwt = { sub: user.id, email: user.email };
+
     return { access_token: await this.jwtService.signAsync(payloadJwt) };
   }
 }

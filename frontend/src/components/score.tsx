@@ -1,5 +1,3 @@
-import { X } from "lucide-react";
-
 export default function Score({ finalScore }: { finalScore: number }) {
   const percentage = (finalScore / 5) * 100;
 
