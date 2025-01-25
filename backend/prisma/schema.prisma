@@ -21,9 +21,19 @@ model User {
   last_name      String?
   picture        String?
   full_name      String?
+  is_premium     Boolean  @default(false)
+  roleId         String   @default("user")
   email_verified Boolean  @default(false)
   created_at     DateTime @default(now())
+  role           Roles    @relation(fields: [roleId], references: [id])
   Files          Files[]
+}
+
+model Roles {
+  id         String   @id @default(cuid())
+  role_name  String   @unique()
+  created_at DateTime @default(now())
+  users      User[]
 }
 
 model Files {

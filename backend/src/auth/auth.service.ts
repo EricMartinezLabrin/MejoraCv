@@ -60,6 +60,18 @@ export class AuthService {
       where: { google_id: google_id },
     });
 
+    let role = await this.prisma.roles.findUnique({
+      where: { role_name: 'user' },
+    });
+
+    if (!role) {
+      role = await this.prisma.roles.create({
+        data: {
+          role_name: 'user',
+        },
+      });
+    }
+
     if (!user) {
       user = await this.prisma.user.create({
         data: {
@@ -70,6 +82,7 @@ export class AuthService {
           picture: picture,
           full_name: name,
           email_verified: email_verified,
+          roleId: role.id,
         },
       });
     }
