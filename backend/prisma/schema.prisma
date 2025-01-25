@@ -14,19 +14,22 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(cuid())
-  google_id      String   @unique
-  email          String   @unique
+  id             String           @id @default(cuid())
+  google_id      String           @unique
+  email          String           @unique
   first_name     String?
   last_name      String?
   picture        String?
   full_name      String?
-  is_premium     Boolean  @default(false)
-  roleId         String   @default("user")
-  email_verified Boolean  @default(false)
-  created_at     DateTime @default(now())
-  role           Roles    @relation(fields: [roleId], references: [id])
+  is_premium     Boolean          @default(false)
+  premium_start  DateTime?
+  premium_end    DateTime?
+  roleId         String           @default("user")
+  email_verified Boolean          @default(false)
+  created_at     DateTime         @default(now())
+  role           Roles            @relation(fields: [roleId], references: [id])
   Files          Files[]
+  BillingHistory BillingHistory[]
 }
 
 model Roles {
@@ -47,4 +50,32 @@ model Files {
   created_at    DateTime @default(now())
   userId        String
   user          User     @relation(fields: [userId], references: [id])
+}
+
+model BillingHistory {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  amount     Float
+  currency   String
+  status     String
+  created_at DateTime @default(now())
+}
+
+model AdsType {
+  id         String   @id @default(cuid())
+  type_name  String   @unique
+  created_at DateTime @default(now())
+  Ads        Ads[]
+}
+
+model Ads {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  image       String
+  url         String
+  type        String
+  created_at  DateTime @default(now())
+  Types       AdsType  @relation(fields: [type], references: [id])
 }
