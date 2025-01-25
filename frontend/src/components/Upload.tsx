@@ -8,6 +8,7 @@ import { uploadFile, analyzeCv } from "@/api/backend";
 import { CVAnalize } from "@/lib/types";
 import LoginModal from "./login-modal";
 import { useAuthStore } from "@/store/authStore";
+import MiddleAds from "./ads/middle-ads";
 
 export default function Upload({ session }: { session: string | null }) {
   const [finalScore, setFinalScore] = useState<number | undefined>(undefined);
@@ -208,7 +209,7 @@ export default function Upload({ session }: { session: string | null }) {
           ) : (
             <TypewriterEffect key={2} words={wordsLoaded} />
           ))}
-
+        <MiddleAds />
         {!isLoading && messages && (
           <CvCheck Aimessages={messages} finalScore={finalScore} />
         )}

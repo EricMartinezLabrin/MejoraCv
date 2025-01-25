@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 import { useEffect } from "react";
 import "@/app/globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import LeftAds from "@/components/ads/left-ads";
+import RightAds from "@/components/ads/right-ads";
 
 export interface Props {
   title: string;
@@ -71,14 +73,18 @@ export default function RootLayout({ children }: Props) {
       </head>
       <body className="overflow-hidden overflow-y-auto bg-body">
         <Navbar />
-        <main className="flex min-h-screen flex-col items-center py-24 px-4 lg:p-24">
-          <GoogleOAuthProvider
-            clientId={
-              process.env.NEXT_PUBLIC_G_CLIENT_ID || "default-client-id"
-            }
-          >
-            {children}
-          </GoogleOAuthProvider>
+        <main className="grid min-h-max grid-cols-1 pt-24 px-24 px-4  max-w-2xl mx-auto lg:max-w-none lg:grid-cols-[1fr_2fr_1fr]">
+          <LeftAds />
+          <section>
+            <GoogleOAuthProvider
+              clientId={
+                process.env.NEXT_PUBLIC_G_CLIENT_ID || "default-client-id"
+              }
+            >
+              {children}
+            </GoogleOAuthProvider>
+          </section>
+          <RightAds />
         </main>
         <Footer />
       </body>

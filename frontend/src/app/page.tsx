@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import Upload from "@/components/Upload";
 import LoginBanner from "@/components/login-banner";
 import { useAuthStore } from "@/store/authStore";
+import TopAds from "@/components/ads/top-ads";
+import MiddleAds from "@/components/ads/middle-ads";
+import BottomAds from "@/components/ads/bottom-ads";
 
 export default function Home() {
   const [session, setSession] = useState<string | null>(null);
@@ -24,8 +27,11 @@ export default function Home() {
 
   return (
     <main>
+      <TopAds />
       <Upload session={session} />
+
       {!session && <LoginBanner session={setSession} />}
+      <BottomAds />
     </main>
   );
 }
