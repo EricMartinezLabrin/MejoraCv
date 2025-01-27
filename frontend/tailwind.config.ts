@@ -1,13 +1,14 @@
-import type { Config } from "tailwindcss"
+import { shadow } from "pdfjs-dist";
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -67,20 +68,87 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fadeIn": {
-          '0%': { opacity: "0" },
-          '100%': { opacity: "1" },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        glow: {
+          "0%, 100%": { filter: "brightness(100%)" },
+          "50%": { filter: "brightness(150%)" },
+        },
+        sparkleAndShake: {
+          "0%": {
+            opacity: "0.5",
+            filter: "drop-shadow(0 0 0 0 rgba(255,255,255,0)) brightness(100%)",
+            transform: "translateX(0)",
+          },
+          "10%": {
+            opacity: "1",
+            filter: "drop-shadow(0 0 0 0 rgba(255,255,255,0)) brightness(100%)",
+            transform: "translateX(0)",
+          },
+          "45%": {
+            opacity: "1",
+            filter:
+              "drop-shadow(0 0 30px 10px rgba(255,255,255,0.7)) brightness(130%)",
+            transform: "translateX(-2px)",
+          },
+          "50%": {
+            opacity: "1",
+            filter:
+              "drop-shadow(0 0 30px 10px rgba(255,255,255,0.7)) brightness(130%)",
+            transform: "translateX(2px)",
+          },
+          "55%": {
+            opacity: "1",
+            filter:
+              "drop-shadow(0 0 30px 10px rgba(255,255,255,0.7)) brightness(130%)",
+            transform: "translateX(-2px)",
+          },
+          "60%": {
+            opacity: "1",
+            filter:
+              "drop-shadow(0 0 30px 10px rgba(255,255,255,0.7)) brightness(130%)",
+            transform: "translateX(0)",
+          },
+          "90%": {
+            opacity: "1",
+            filter:
+              "drop-shadow(0 0 10px rgba(255,255,255,0.7)) brightness(100%)",
+            transform: "translateX(0)",
+          },
+          "100%": {
+            opacity: "0.5",
+            filter:
+              "drop-shadow(0 0 10px rgba(255,255,255,0.7)) brightness(100%)",
+            transform: "translateX(0)",
+          },
+        },
+        shake: {
+          "0%": { transform: "translateX(0)" },
+          "10%": { transform: "translateX(-10px)" },
+          "20%": { transform: "translateX(10px)" },
+          "30%": { transform: "translateX(-10px)" },
+          "40%": { transform: "translateX(10px)" },
+          "50%": { transform: "translateX(-10px)" },
+          "60%": { transform: "translateX(10px)" },
+          "70%": { transform: "translateX(-10px)" },
+          "80%": { transform: "translateX(10px)" },
+          "90%": { transform: "translateX(-10px)" },
+          "100%": { transform: "translateX(0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fadeIn": 'fadeIn 0.5s ease-in-out forwards',
+        fadeIn: "fadeIn 0.5s ease-in-out forwards",
+        "glow-slow": "glow 2s ease-in-out infinite 30s",
+        sparkleAndShake: "sparkleAndShake 2s ease-in-out infinite 30s",
+        shake: "shake ease-in-out infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
-
+export default config;
