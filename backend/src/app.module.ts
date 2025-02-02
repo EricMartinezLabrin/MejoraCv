@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { FilesModule } from './files/files.module';
 import { EvalModule } from './eval/eval.module';
 import { AdsTypeModule } from './ads-type/ads-type.module';
+import { AdsModule } from './ads/ads.module';
 
 @Module({
-  imports: [AuthModule, UserModule, FilesModule, EvalModule, AdsTypeModule],
+  imports: [AuthModule, UserModule, FilesModule, EvalModule, AdsTypeModule, AdsModule],
   controllers: [AppController],
   providers: [AppService],
 })
