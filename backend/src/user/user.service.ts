@@ -17,4 +17,9 @@ export class UserService {
       },
     });
   }
+
+  async getMe(req: Request) {
+    console.log(req);
+    return 'hola';
+  }
 }

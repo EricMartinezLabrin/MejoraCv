@@ -25,4 +25,13 @@ export class UserController {
       throw error;
     }
   }
+
+  @Get('me')
+  async getMe(req: Request) {
+    try {
+      return await this.userService.getMe(req);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
