@@ -11,7 +11,11 @@ export interface Props {
   title: string;
   children: React.ReactNode;
 }
-export default function RootLayout({ children }: Props) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   useEffect(() => {
     document.documentElement.classList.add("dark");
 
@@ -73,7 +77,7 @@ export default function RootLayout({ children }: Props) {
       </head>
       <body className="overflow-hidden overflow-y-auto bg-body">
         <Navbar />
-        <main className="grid min-h-max grid-cols-1 pt-24 px-24 px-4  max-w-2xl mx-auto lg:max-w-none lg:grid-cols-[1fr_2fr_1fr]">
+        <main className="grid min-h-max grid-cols-1 pt-24 px-24  max-w-2xl mx-auto lg:max-w-none lg:grid-cols-[1fr_2fr_1fr]">
           <LeftAds />
           <section>
             <GoogleOAuthProvider
