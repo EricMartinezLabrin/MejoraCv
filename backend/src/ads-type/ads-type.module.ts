@@ -6,5 +6,6 @@ import { PrismaService } from '@/prisma.services';
 @Module({
   controllers: [AdsTypeController],
   providers: [AdsTypeService, PrismaService],
+  exports: [AdsTypeService],
 })
 export class AdsTypeModule {}

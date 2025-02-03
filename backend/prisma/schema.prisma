@@ -77,5 +77,6 @@ model Ads {
   url         String
   type        String
   created_at  DateTime @default(now())
+  status      Boolean  @default(true)
   Types       AdsType  @relation(fields: [type], references: [id])
 }
